@@ -1,8 +1,9 @@
-import { MapView } from '../components'
+import { LocationButton, MapView } from '../components'
 
 const Home = () => (
   <div>
     <MapView />
+    <LocationButton />
   </div>
 )
 

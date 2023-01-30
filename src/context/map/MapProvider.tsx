@@ -1,4 +1,4 @@
-import { Map } from 'mapbox-gl'
+import { Map, Marker, Popup } from 'mapbox-gl'
 import {
   FC, ReactNode, useMemo, useReducer
 } from 'react'
@@ -24,6 +24,17 @@ export const MapProvider: FC<IMapProvider> = ({ children }) => {
   const [state, dispatch] = useReducer(mapReducer, INITIAL_STATE)
 
   const setMap = (map: Map) => {
+    const myLocationPopup = new Popup()
+      .setHTML(`
+        <h4>You are here</h4>
+        <p>Somewhere in the world...</p>
+      `)
+
+    new Marker()
+      .setLngLat(map.getCenter())
+      .setPopup(myLocationPopup)
+      .addTo(map)
+
     dispatch({ type: 'setMap', payload: map })
   }
 
