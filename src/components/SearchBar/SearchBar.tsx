@@ -1,10 +1,12 @@
 import { ChangeEvent, useContext, useRef } from 'react'
 import { PlacesContext } from '../../context'
+import SearchResults from '../SearchResults/SearchResults'
 import styles from './SearchBar.module.scss'
 
 const SearchBar = () => {
   const { searchPlacesByQuery } = useContext(PlacesContext)
 
+  // eslint-disable-next-line no-undef
   const debounceRef = useRef<NodeJS.Timeout>()
   
   const onQueryChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -23,6 +25,8 @@ const SearchBar = () => {
         placeholder="Buscar lugar"
         onChange={onQueryChange}
       />
+
+      <SearchResults />
     </div>
   )
 }

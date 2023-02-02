@@ -28,7 +28,7 @@ export const placesReducer = (state:PlacesState, action: PlacesActions):PlacesSt
       
       return {
         ...state,
-        isLoadingPlaces: true,
+        isLoadingPlaces: false,
         places: action.payload
       }
   
