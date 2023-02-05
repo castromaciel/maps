@@ -3,7 +3,7 @@
 import {
   Dispatch, FC, SetStateAction, useContext
 } from 'react'
-import { MapContext } from '../../context'
+import { MapContext, PlacesContext } from '../../context'
 import { Feature } from '../../interfaces/places'
 import styles from './SearchResultsItem.module.scss'
 
@@ -14,7 +14,8 @@ interface Props {
 }
 
 const SearchResultsItem: FC<Props> = ({ place, activeId, setActiveId }) => {
-  const { map } = useContext(MapContext)
+  const { map, getRouteBetweenPoints } = useContext(MapContext)
+  const { userLocation } = useContext(PlacesContext)
 
   const onPlaceClicked = (selectedPlace: Feature) => {
     const [lng, lat] = selectedPlace.center
@@ -23,6 +24,13 @@ const SearchResultsItem: FC<Props> = ({ place, activeId, setActiveId }) => {
       center: [lng, lat]
     })
     setActiveId(place.id)
+  }
+
+  const getRoute = (selectedPlace: Feature) => {
+    if (!userLocation) return
+    const [lng, lat] = selectedPlace.center
+
+    getRouteBetweenPoints({ start: userLocation, end: [lng, lat] })
   }
 
   return (
@@ -35,7 +43,9 @@ const SearchResultsItem: FC<Props> = ({ place, activeId, setActiveId }) => {
       <p style={{ fontSize: 12 }}>{place.place_name}</p>
       <button
         type="button"
+        disabled={activeId === place.id}
         className={`${activeId === place.id ? 'btn-outline-light' : 'btn-outline-dark'} btn `}
+        onClick={() => getRoute(place)}
       >
         Direcciones
       </button>

@@ -4,6 +4,7 @@ export interface DirectionsResponse {
   waypoints: Waypoint[];
   code: string;
   uuid: string;
+  message?: string
 }
 
 export interface Route {
