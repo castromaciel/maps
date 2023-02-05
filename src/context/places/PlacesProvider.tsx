@@ -34,7 +34,10 @@ export const PlacesProvider: FC<IPlacesProvider> = ({ children }) => {
   }, [])
 
   const searchPlacesByQuery = useCallback(async (query: string):Promise<Feature[]> => {
-    if (query.length === 0) return []
+    if (query.length === 0) {
+      dispatch({ type: 'setPlaces', payload: [] })
+      return [] 
+    }
     if (!state.userLocation) throw new Error('Ther is no user location')
 
     dispatch({ type: 'setLoadingPlaces' })
