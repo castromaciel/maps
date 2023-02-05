@@ -1,7 +1,9 @@
 import { Map, Marker, Popup } from 'mapbox-gl'
 import {
-  FC, ReactNode, useMemo, useReducer
+  FC, ReactNode, useContext, useEffect, useMemo, useReducer
 } from 'react'
+import { PlacesContext } from '../places/PlacesContext'
+import { generateNewMarkers } from './helpers'
 import { MapContext } from './MapContext'
 import { mapReducer } from './mapReducer'
 
@@ -9,6 +11,7 @@ export interface MapState {
   isMapReady: boolean
   map?: Map
 
+  markers: Marker[]
 }
 
 interface IMapProvider {
@@ -17,11 +20,20 @@ interface IMapProvider {
 
 const INITIAL_STATE: MapState = {
   isMapReady: false,
-  map: undefined
+  map: undefined,
+  markers: []
 }
 
 export const MapProvider: FC<IMapProvider> = ({ children }) => {
   const [state, dispatch] = useReducer(mapReducer, INITIAL_STATE)
+  const { places } = useContext(PlacesContext)
+
+  useEffect(() => {
+    state.markers.forEach((marker) => { marker.remove() })
+    const newMarkers: Marker[] = generateNewMarkers({ places, state })
+    dispatch({ type: 'setMarkers', payload: newMarkers })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [places])
 
   const setMap = (map: Map) => {
     const myLocationPopup = new Popup()
