@@ -1,5 +1,4 @@
 import {
-  AnySourceData,
   LngLatBounds, Map, Marker, Popup
 } from 'mapbox-gl'
 import {
@@ -8,7 +7,9 @@ import {
 import { directionsApi } from '../../apis'
 import { DirectionsResponse } from '../../interfaces/directions'
 import { PlacesContext } from '../places/PlacesContext'
-import { formatDistanceToKms, formatSecToMinutes, generateNewMarkers } from './helpers'
+import {
+  formatDistanceToKms, formatSecToMinutes, generateBounds, generateNewMarkers, generatePolyline
+} from './helpers'
 import { MapContext } from './MapContext'
 import { mapReducer } from './mapReducer'
 
@@ -82,54 +83,9 @@ export const MapProvider: FC<IMapProvider> = ({ children }) => {
       start
     )
 
-    for (const coord of coords) {
-      const newCoord: [number, number] = [coord[0], coord[1]]
-      bounds.extend(newCoord)
-    }
-
-    state.map?.fitBounds(bounds, {
-      padding: 200
-    })
-
-    // !Polyline
-
-    const sourceData: AnySourceData = {
-      type: 'geojson',
-      data: { 
-        type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            properties: {},
-            geometry: {
-              type: 'LineString',
-              coordinates: coords
-            }
-          }
-        ]
-      }
-    }
-
-    if (state.map?.getLayer('RouteString')) {
-      state.map?.removeLayer('RouteString')
-      state.map?.removeSource('RouteString')
-    }
-
-    state.map?.addSource('RouteString', sourceData)
-    state.map?.addLayer({
-      id: 'RouteString',
-      type: 'line',
-      source: 'RouteString',
-      layout: {
-        'line-cap': 'round',
-        'line-join': 'round'
-      },
-      paint: {
-        'line-color': 'black',
-        'line-width': 3
-      }
-    })
-  }, [state.map])
+    generateBounds({ coords, bounds, state })    
+    generatePolyline(coords, state)
+  }, [state])
 
   const value = useMemo(() => ({
     ...state, setMap, getRouteBetweenPoints

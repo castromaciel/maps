@@ -1,3 +1,5 @@
 export { formatDistanceToKms } from './formatDistanceToKms'
 export { formatSecToMinutes } from './formatSecToMinutes'
+export { generateBounds } from './generateBounds'
 export { generateNewMarkers } from './generateNewMarkers'
+export { generatePolyline } from './generatePolyline'
