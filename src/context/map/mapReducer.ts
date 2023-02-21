@@ -1,9 +1,10 @@
 import { Map, Marker } from 'mapbox-gl'
-import { MapState } from './MapProvider'
+import { DialogState, MapState } from './MapProvider'
 
 type MapAction = 
 | { type: 'setMap', payload: Map }
 | { type: 'setMarkers', payload: Marker[] }
+| { type: 'setDialog', payload: DialogState}
 
 export const mapReducer = (state: MapState, action: MapAction):MapState => {
   switch (action.type) {
@@ -18,6 +19,12 @@ export const mapReducer = (state: MapState, action: MapAction):MapState => {
       return {
         ...state,
         markers: action.payload
+      }
+
+    case 'setDialog':
+      return {
+        ...state,
+        dialogState: action.payload
       }
 
     default:

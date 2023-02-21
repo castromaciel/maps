@@ -13,11 +13,16 @@ import {
 import { MapContext } from './MapContext'
 import { mapReducer } from './mapReducer'
 
+export interface DialogState {
+  distance: number
+  time: number
+}
 export interface MapState {
   isMapReady: boolean
   map?: Map
 
   markers: Marker[]
+  dialogState: DialogState
 }
 
 interface IMapProvider {
@@ -27,7 +32,8 @@ interface IMapProvider {
 const INITIAL_STATE: MapState = {
   isMapReady: false,
   map: undefined,
-  markers: []
+  markers: [],
+  dialogState: {} as DialogState
 }
 
 export const MapProvider: FC<IMapProvider> = ({ children }) => {
@@ -77,6 +83,8 @@ export const MapProvider: FC<IMapProvider> = ({ children }) => {
     // TODO: show distance and duration at Dialog
     const distanceInKms = formatDistanceToKms(distance)
     const minutes = formatSecToMinutes(duration)
+
+    dispatch({ type: 'setDialog', payload: { distance: distanceInKms, time: minutes } })
 
     const bounds = new LngLatBounds(
       start,

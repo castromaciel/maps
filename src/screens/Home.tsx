@@ -1,5 +1,6 @@
 import { useContext } from 'react'
 import {
+  Dialog,
   Loading, LocationButton, MapView, SearchBar
 } from '../components'
 import { PlacesContext } from '../context'
@@ -14,6 +15,7 @@ const Home = () => {
       <MapView />
       <SearchBar />
       <LocationButton />
+      <Dialog />
     </div>
   ) 
 }
