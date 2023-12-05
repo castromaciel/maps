@@ -23,7 +23,7 @@ The objective of the application is to create a React application using Mapbox. 
 
 To get a local copy, clone it using:
 ```
-git clone https://github.com/castromaciel/maps-app.git
+git clone https://github.com/castromaciel/maps.git
 ```
 
 ### Install dependencies:
@@ -95,7 +95,7 @@ For coding styling, I decided to use [eslint](https://eslint.org/) and the [esli
 
 ## Credits
 
-Maps-app is built and maintained by [Castro Maciel](https://github.com/castromaciel)
+Maps is built and maintained by [Castro Maciel](https://github.com/castromaciel)
 
 ## License
 
